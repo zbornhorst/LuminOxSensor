@@ -18,6 +18,7 @@ Serial.begin (9600);
 serial.begin (9600);
 analogReference (EXTERNAL); //connect AREF to a 3.3V power supply 
 Serial.println ("ppO2 (mBar), temp (C), pressure (mBar), O2 in percent (%), status");
+serial.write (“M 0\r\n”); //puts sensor in stream mode
 }
 
 void loop () {
