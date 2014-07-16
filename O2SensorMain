@@ -81,6 +81,7 @@ for(int i=0; i < ind+1; i++)
  }
  void printValues()
  {
+ String goodVal = "0000";
  Serial.print (oVal);
  Serial.print (", ");
  Serial.print (tVal);
@@ -89,9 +90,9 @@ for(int i=0; i < ind+1; i++)
  Serial.print (", ");
  Serial.print (%Val);
  Serial.print (", ");
- if (eVal.equals("0000"))
- Serial.println ("good");
- else
+ if (strcmp(eVal,goodVal)!=0)
  Serial.println ("bad");
+ else
+ Serial.println ("good");
  
 }
