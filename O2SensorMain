@@ -74,7 +74,7 @@ for(int i=0; i < ind+1; i++)
       case 4
       %Val += buffer [i]-48; //%Val represents O2 in percent %
       case 5
-      eVal += buffer [i]=48; //represents status - if '0000' then good 
+      eVal += buffer [i]-48; //represents status - if '0000' then good 
       
       // we subtract 48 to get to the actual numerical value 
       // example the character '9' has an ASCII value of 57. [57-48=9] 
