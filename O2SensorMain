@@ -15,26 +15,26 @@ String eVal = "";
 
 void setup () {
 Serial.begin (9600);
-serial.begin (9600);
+sensorSerial.begin (9600);
 analogReference (EXTERNAL); //connect AREF to a 3.3V power supply 
 Serial.println ("ppO2 (mBar), temp (C), pressure (mBar), O2 in percent (%), status");
-serial.write (“M 0\r\n”); //puts sensor in stream mode
+sensorSerial.write (“M 0\r\n”); //puts sensor in stream mode
 }
 
 void loop () {
 while(buffer[ind-1] != 0x0A) 
  { 
-    if(serial.available()) 
+    if(sensorSerial.available()) 
     { 
-    buffer[ind] = serial.read(); 
+    buffer[ind] = sensorSerial.read(); 
     ind++; 
     } 
  }
- parse(); 
+ parseStreamMode(); 
  printValues();
  }
  
-void parse (){
+void parseStreamMode (){
 for(int i=0; i < ind+1; i++) 
  { 
      if(buffer[i] == '\r\n')
@@ -64,6 +64,10 @@ for(int i=0; i < ind+1; i++)
       c=5;
       break;
       }
+      case ('E'){
+      c=6;
+      findError();
+      }
       
       switch (c)
       case 1
@@ -80,6 +84,29 @@ for(int i=0; i < ind+1; i++)
       // we subtract 48 to get to the actual numerical value 
       // example the character '9' has an ASCII value of 57. [57-48=9] 
  }
+ 
+ findError(){
+ String error="";
+ for(int i=0; i < ind+1; i++) 
+ { 
+     if(buffer[i] == '\r\n')
+      break; 
+    
+     if(buffer[i] != 0x20) //ignore white space 
+      {
+        error+=buffer[i];
+      }
+ }
+ if (strcmp (error, "E00")==0)
+ Serial.println ("RS232 Receiver Overflow");
+  if (strcmp (error, "E01")==0)
+ Serial.println ("Invalid Command");
+  if (strcmp (error, "E02")==0)
+ Serial.println ("Invalid Frame");
+  if (strcmp (error, "E03")==0)
+ Serial.println ("Invalid Argument");
+ }
+ 
  void printValues()
  {
  String goodVal = "0000";
