@@ -16,7 +16,7 @@ String eVal = "";
 void setup () {
 Serial.begin (9600);
 sensorSerial.begin (9600);
-analogReference (EXTERNAL); //connect AREF to a 3.3V power supply 
+// analogReference (EXTERNAL); //connect AREF to a 3.3V power supply? Will probably work on standard pins instead
 Serial.println ("ppO2 (mBar), temp (C), pressure (mBar), O2 in percent (%), status");
 sensorSerial.write (“M 0\r\n”); //puts sensor in stream mode
 }
